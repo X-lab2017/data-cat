@@ -1,4 +1,4 @@
-import { GitHubClient } from "./client";
+import { GitHubClient } from "github-graphql-v4-client";
 import { UserWithTimeStamp, PageInfo } from "./data-types";
 
 const starCountPerPage = 20;

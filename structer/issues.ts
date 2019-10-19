@@ -1,4 +1,4 @@
-import { GitHubClient } from "./client";
+import { GitHubClient } from "github-graphql-v4-client";
 import { Issue, PageInfo } from "./data-types";
 
 const issuesPerPage = 5;

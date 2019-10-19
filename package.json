@@ -1,0 +1,28 @@
+{
+  "name": "data-cat",
+  "version": "1.0.0",
+  "description": "",
+  "main": "data_cat.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "@types/node": "^12.11.1",
+    "bunyan": "^1.8.12",
+    "github-graphql-v4-client": "^0.1.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Badstu/data-cat.git"
+  },
+  "author": "sayhi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Badstu/data-cat/issues"
+  },
+  "homepage": "https://github.com/Badstu/data-cat#readme"
+}

@@ -1,4 +1,4 @@
-import { GitHubClient } from "./client";
+import { GitHubClient } from "github-graphql-v4-client";
 import { Comment, PullRequest, PageInfo } from "./data-types";
 
 const pullRequestsPerPage: number = 5;
