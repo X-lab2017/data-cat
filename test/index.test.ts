@@ -14,7 +14,7 @@
  */
 
 import nock from 'nock';
-import { GitHubClient } from '../src';
+import { GitHubClient } from "github-graphql-v4-client";
 
 // set timeout to 30s to fit network
 jest.setTimeout(30000);

@@ -1,5 +1,3 @@
-const graphql = require("@octokit/graphql");
-const waitFor = require("p-wait-for");
 import Logger = require('bunyan')
 import { GitHubClient } from "github-graphql-v4-client";
 
@@ -13,8 +11,16 @@ import { getPullRequests } from '../structer/pull-requests';
 import { getContributors } from "../structer/contributors"
 
 
-type OrgProxy = {
+interface OrgProxy {
   repos: (login: string, updatedAfter?: Date) => Promise<Repo[]>;
+}
+
+interface RepoFullParam {
+  stars?: boolean;
+  forks?: boolean;
+  issues?: boolean;
+  pulls?: boolean;
+  contributors?: boolean;
 }
 
 interface RepoPoxy {
@@ -27,7 +33,7 @@ interface RepoPoxy {
   full: (owner: string, name: string, param?: RepoFullParam, updatedAfter?: Date) => Promise<Repo>;
 }
 
-interface ClientOption {
+interface DataCatOption {
   tokens: string[];
   logger?: Logger;
   maxConcurrentReqNumber?: number;
@@ -37,7 +43,6 @@ interface ClientOption {
 
 
 export class DataCat {
-  private inited: boolean;
   private logger: Logger = Logger.createLogger({
     name: "GitHub-GraphQL-Fetcher",
     level: Logger.ERROR
@@ -45,17 +50,14 @@ export class DataCat {
   private client: GitHubClient;
   private tokens: string[];
   private maxConcurrentReqNumber: number = 10;
-  private concurrentReqNumber: number = 0;
-  private getConnectionRetryInterval = 10000;
   private filterStatusCode: number[] = [400, 401, 403, 404];
-  private requestCostPrediction = 15;
   private maxRetryTimes = 10;
 
-
-  constructor(options: ClientOption) {
+  constructor(options: DataCatOption) {
     if (options.tokens.length === 0) {
       throw new Error('At least one token needed.');
     }
+    this.tokens = options.tokens;
     if (options.logger) {
       this.logger = options.logger;
     }
@@ -68,16 +70,18 @@ export class DataCat {
     if (options.maxConcurrentReqNumber) {
       this.maxConcurrentReqNumber = options.maxConcurrentReqNumber;
     }
-    this.tokens = options.tokens;
-    this.inited = false;
+
   }
 
-
-  public async init(tokens: string[]) {
+  public async init() {
     this.client = new GitHubClient({
-      tokens: tokens
+      tokens: this.tokens,
+      logger: this.logger,
+      maxConcurrentReqNumber: this.maxConcurrentReqNumber,
+      filterStatusCode: this.filterStatusCode,
+      maxRetryTimes: this.maxRetryTimes
     });
-    this.inited = true;
+    await this.client.init();
   }
 
   public org: OrgProxy = {
@@ -112,23 +116,3 @@ export class DataCat {
     }
   }
 }
-
-
-
-
-// let client = new GitHubClient({
-//   tokens: [""],
-//   maxConcurrentReqNumber: 20,
-//   maxRetryTimes: 5,
-//   filterStatusCode: [400, 403],
-// });
-// async function data_cat() {
-//   await client.init();
-
-//   let owner: string = "Badstu";
-//   let name: string = "UDA_CV";
-
-//   let Repo = await getRepo(owner, name, client);
-//   console.log(Repo);
-
-// }

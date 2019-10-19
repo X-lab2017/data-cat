@@ -64,3 +64,4 @@ typings/
 lib
 
 src/test_client.ts
+src/test_data_cat.ts

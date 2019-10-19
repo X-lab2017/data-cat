@@ -108,6 +108,3 @@ query getCommits($owner: String!, $name: String!, $branchName: String!, $commitC
     }
 }
 `;
-
-getContributors()
-
