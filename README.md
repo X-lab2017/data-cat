@@ -1,6 +1,6 @@
-<img src="https://raw.githubusercontent.com/Badstu/pic_set/master/img/20191019163227.png" style="zoom: 33%;" align="left"/>
+<img src="https://raw.githubusercontent.com/Badstu/pic_set/master/img/20191019163227.png" height="120" align="left"/>
 
---- 
+---
 
 # description
 
