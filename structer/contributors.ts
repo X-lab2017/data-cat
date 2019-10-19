@@ -1,10 +1,10 @@
-import { GitHubClient } from "./client";
+import { GitHubClient } from "github-graphql-v4-client"
 import { PageInfo, UserWithTimeStampAndEmail } from "./data-types";
 
 const commitsPerPage = 20;
 
 export async function getContributors(client: GitHubClient, owner: string, name: string, branchName: string, commitLimit?: number): Promise<UserWithTimeStampAndEmail[]> {
-  let commitsInfo: CommitsInfo;
+  let commitsInfo: CommitsInfo
   let pageInfo: PageInfo;
   let commits: RawCommitInfo[] = [];
   do {
@@ -108,3 +108,6 @@ query getCommits($owner: String!, $name: String!, $branchName: String!, $commitC
     }
 }
 `;
+
+getContributors()
+
