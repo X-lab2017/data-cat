@@ -2,7 +2,7 @@
   "name": "data-cat",
   "version": "1.0.0",
   "description": "",
-  "main": "data_cat.js",
+  "main": "./lib/index.js",
   "directories": {
     "test": "test"
   },
@@ -11,11 +11,32 @@
     "@types/node": "^12.11.1",
     "bunyan": "^1.8.12",
     "github-graphql-v4-client": "^0.1.0",
-    "nock": "^11.4.0"
+    "jest": "^24.9.0",
+    "nock": "^11.4.0",
+    "tslib": "^1.10.0"
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --coverage --runInBand"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "transform": {
+      ".*": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts)$",
+    "moduleFileExtensions": [
+      "ts",
+      "js"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "statements": 60,
+        "branches": 30,
+        "functions": 80,
+        "lines": 60
+      }
+    }
   },
   "repository": {
     "type": "git",

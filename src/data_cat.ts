@@ -1,14 +1,14 @@
 import Logger = require('bunyan')
 import { GitHubClient } from "github-graphql-v4-client";
 
-import { getRepos } from "../structer/organizations"
-import { Repo, UserWithTimeStamp, Issue, PullRequest, UserWithTimeStampAndEmail } from '../structer/data-types';
-import { getRepo } from "../structer/repos"
-import { getStars } from '../structer/stars';
-import { getForks } from '../structer/forks';
-import { getIssues } from '../structer/issues';
-import { getPullRequests } from '../structer/pull-requests';
-import { getContributors } from "../structer/contributors"
+import { getRepos } from "./structrue/organizations"
+import { Repo, UserWithTimeStamp, Issue, PullRequest, UserWithTimeStampAndEmail } from './structrue/data-types';
+import { getRepo } from "./structrue/repos"
+import { getStars } from './structrue/stars';
+import { getForks } from './structrue/forks';
+import { getIssues } from './structrue/issues';
+import { getPullRequests } from './structrue/pull-requests';
+import { getContributors } from "./structrue/contributors"
 
 
 interface OrgProxy {
