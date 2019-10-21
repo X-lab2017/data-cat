@@ -13,9 +13,12 @@
     "github-graphql-v4-client": "^0.1.0",
     "jest": "^24.9.0",
     "nock": "^11.4.0",
+    "ts-jest": "^24.1.0",
     "tslib": "^1.10.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "typescript": "^3.6.4"
+  },
   "scripts": {
     "test": "jest --coverage --runInBand"
   },
