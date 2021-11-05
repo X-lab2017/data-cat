@@ -22,33 +22,14 @@
   "scripts": {
     "test": "jest --coverage --runInBand"
   },
-  "jest": {
-    "preset": "ts-jest",
-    "transform": {
-      ".*": "ts-jest"
-    },
-    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts)$",
-    "moduleFileExtensions": [
-      "ts",
-      "js"
-    ],
-    "coverageThreshold": {
-      "global": {
-        "statements": 60,
-        "branches": 30,
-        "functions": 80,
-        "lines": 60
-      }
-    }
-  },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Badstu/data-cat.git"
+    "url": "git+https://github.com/X-lab2017/data-cat.git"
   },
-  "author": "sayhi",
-  "license": "ISC",
+  "author": "frank-zsy",
+  "license": "Apache 2.0",
   "bugs": {
-    "url": "https://github.com/Badstu/data-cat/issues"
+    "url": "https://github.com/X-lab2017/data-cat/issues"
   },
-  "homepage": "https://github.com/Badstu/data-cat#readme"
+  "homepage": "https://github.com/X-lab2017/data-cat#readme"
 }
