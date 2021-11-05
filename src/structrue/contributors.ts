@@ -1,10 +1,10 @@
-import { GitHubClient } from "github-graphql-v4-client"
-import { PageInfo, UserWithTimeStampAndEmail } from "./data-types";
+import { GitHubClient } from 'github-graphql-v4-client';
+import { PageInfo, UserWithTimeStampAndEmail } from './data-types';
 
 const commitsPerPage = 20;
 
 export async function getContributors(client: GitHubClient, owner: string, name: string, branchName: string, commitLimit?: number): Promise<UserWithTimeStampAndEmail[]> {
-  let commitsInfo: CommitsInfo
+  let commitsInfo: CommitsInfo;
   let pageInfo: PageInfo;
   let commits: RawCommitInfo[] = [];
   do {
@@ -17,15 +17,15 @@ export async function getContributors(client: GitHubClient, owner: string, name:
     });
     if (!commitsInfo || !commitsInfo.repository || !commitsInfo.repository.ref ||
       !commitsInfo.repository.ref.target || commitsInfo.repository.ref.target.history.nodes.length === 0) break;
-    commits = commits.concat(commitsInfo.repository.ref.target.history.nodes)
+    commits = commits.concat(commitsInfo.repository.ref.target.history.nodes);
     pageInfo = commitsInfo.repository.ref.target.history.pageInfo;
     if (commitLimit && commits.length > commitLimit) break;
   } while (pageInfo.hasNextPage);
-  let contributors: UserWithTimeStampAndEmail[] = [];
+  const contributors: UserWithTimeStampAndEmail[] = [];
   commits.filter(c => c.author && c.author.user).forEach(c => {
-    let date = c.pushedDate ? c.pushedDate : c.committedDate;
-    let contributor = contributors.find(con => con.login === c.author.user.login);
-    let email = c.author.user.email ? c.author.user.email : c.author.email;
+    const date = c.pushedDate ? c.pushedDate : c.committedDate;
+    const contributor = contributors.find(con => con.login === c.author.user.login);
+    const email = c.author.user.email ? c.author.user.email : c.author.email;
     if (!contributor) {
       contributors.push({
         login: c.author.user.login,
@@ -51,7 +51,7 @@ type RawCommitInfo = {
   };
   pushedDate: string;
   committedDate: string;
-}
+};
 
 type CommitsInfo = {
   repository: {

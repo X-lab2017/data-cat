@@ -1,12 +1,13 @@
-import { GitHubClient } from "github-graphql-v4-client";
+import { GitHubClient } from 'github-graphql-v4-client';
 import { Repo, PageInfo } from './data-types';
 
 const perPageNum = 5;
 
 function parseRepo(r: RawRepoInfo): Repo {
-  let repo: Repo = {
+  const repo: Repo = {
     // basic
     id: r.id,
+    databaseId: r.databaseId,
     owner: r.owner ? r.owner.login : null,
     ownerInfo: r.owner,
     name: r.name,
@@ -29,7 +30,7 @@ function parseRepo(r: RawRepoInfo): Repo {
     forks: [],
     // branch
     branchCount: r.refs ? r.refs.totalCount : 0,
-    defaultBranchName: r.defaultBranchRef ? r.defaultBranchRef.name : "",
+    defaultBranchName: r.defaultBranchRef ? r.defaultBranchRef.name : '',
     defaultBranchCommitCount: (r.defaultBranchRef && r.defaultBranchRef.target) ? r.defaultBranchRef.target.history.totalCount : 0,
     // release
     releaseCount: r.releases ? r.releases.totalCount : 0,
@@ -56,7 +57,7 @@ export async function getRepos(login: string, client: GitHubClient, updatedAfter
       });
     if (!reposInfo || !reposInfo.repositoryOwner || !reposInfo.repositoryOwner.repositories
       || reposInfo.repositoryOwner.repositories.nodes.length === 0) break;
-    let lastUpdatedAt = new Date(reposInfo.repositoryOwner.repositories
+    const lastUpdatedAt = new Date(reposInfo.repositoryOwner.repositories
       .nodes[reposInfo.repositoryOwner.repositories.nodes.length - 1].updatedAt);
     if (updatedAfter && lastUpdatedAt < updatedAfter) {
       repos = repos.concat(reposInfo.repositoryOwner.repositories.nodes.filter(r => new Date(r.updatedAt) >= updatedAfter).map(parseRepo));
@@ -89,6 +90,7 @@ type RawRepoInfo = {
   };
   name: string;
   id: string;
+  databaseId: number;
   updatedAt: string;
   pushedAt: string;
   createdAt: string;
@@ -127,7 +129,7 @@ type RawRepoInfo = {
   codeOfConduct: {
     url: string;
   };
-}
+};
 
 type ReposInfo = {
   repositoryOwner: {
@@ -145,7 +147,7 @@ type QueryVars = {
   login: string;
   num: number;
   cursor: string;
-}
+};
 
 const listReposSql = `query listReopsFirst($login: String!, $num: Int, $cursor: String) {
     rateLimit {
@@ -191,6 +193,7 @@ const listReposSql = `query listReopsFirst($login: String!, $num: Int, $cursor: 
                 }
                 name
                 id
+                databaseId
                 updatedAt
                 createdAt
                 pushedAt
@@ -234,4 +237,4 @@ const listReposSql = `query listReopsFirst($login: String!, $num: Int, $cursor: 
             }
         }
     }
-}`
+}`;

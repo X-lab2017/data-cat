@@ -1,18 +1,27 @@
-import Logger = require('bunyan')
-import { GitHubClient } from "github-graphql-v4-client";
+import Logger = require('bunyan');
+import { GitHubClient } from 'github-graphql-v4-client';
 
-import { getRepos } from "./structrue/organizations"
-import { Repo, UserWithTimeStamp, Issue, PullRequest, UserWithTimeStampAndEmail } from './structrue/data-types';
-import { getRepo } from "./structrue/repos"
+import { getRepos } from './structrue/organizations';
+import { Repo, UserWithTimeStamp, Issue, PullRequest, UserWithTimeStampAndEmail, User, UserFollower } from './structrue/data-types';
+import { getRepo } from './structrue/repos';
 import { getStars } from './structrue/stars';
 import { getForks } from './structrue/forks';
 import { getIssues } from './structrue/issues';
 import { getPullRequests } from './structrue/pull-requests';
-import { getContributors } from "./structrue/contributors"
+import { getContributors } from './structrue/contributors';
+import { getUser } from './structrue/user';
+import { getUserFollowing } from './structrue/user-following';
+import { getUserFollower } from './structrue/user-follower';
 
 
 interface OrgProxy {
   repos: (login: string, updatedAfter?: Date) => Promise<Repo[]>;
+}
+
+interface UserProxy {
+  info: (login: string) => Promise<User>;
+  following: (login: string) => Promise<UserFollower[]>;
+  follower: (login: string) => Promise<UserFollower[]>;
 }
 
 interface RepoFullParam {
@@ -44,7 +53,7 @@ interface DataCatOption {
 
 export class DataCat {
   private logger: Logger = Logger.createLogger({
-    name: "GitHub-GraphQL-Fetcher",
+    name: 'GitHub-GraphQL-Fetcher',
     level: Logger.ERROR
   });
   private client: GitHubClient;
@@ -86,7 +95,7 @@ export class DataCat {
 
   public org: OrgProxy = {
     repos: (login, updatedAfter) => getRepos(login, this.client, updatedAfter)
-  }
+  };
 
   public repo: RepoPoxy = {
     info: (owner, name) => getRepo(owner, name, this.client),
@@ -96,9 +105,9 @@ export class DataCat {
     pulls: (owner, name, updatedAfter) => getPullRequests(this.client, owner, name, updatedAfter),
     contributors: (owner, name, branch, commitLimit) => getContributors(this.client, owner, name, branch, commitLimit),
     full: async (owner, name, params, updatedAfter) => {
-      let repo = await this.repo.info(owner, name);
+      const repo = await this.repo.info(owner, name);
 
-      let [stars, forks, issues, pulls, contributors] = await Promise.all([
+      const [stars, forks, issues, pulls, contributors] = await Promise.all([
         (params && params.stars && repo.starCount > 0) ? this.repo.stars(owner, name, updatedAfter) : [],
         (params && params.forks && repo.forkCount > 0) ? this.repo.forks(owner, name, updatedAfter) : [],
         (params && params.issues) ? this.repo.issues(owner, name, updatedAfter) : [],
@@ -114,5 +123,11 @@ export class DataCat {
       repo.contributors = contributors;
       return repo;
     }
-  }
+  };
+
+  public user: UserProxy = {
+    info: (login) => getUser(login, this.client),
+    following: (login) => getUserFollowing(login, this.client),
+    follower: (login) => getUserFollower(login, this.client)
+  };
 }

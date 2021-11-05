@@ -19,7 +19,7 @@ async function test_data_cat() {
   });
   await data_cat.init();
 
-  let repos = await data_cat.org.repos("Badstu");
+  let repos = await data_cat.org.repos('X-lab2017');
   return repos;
 }
 
@@ -31,8 +31,7 @@ console.log(test_data_cat());
 org{
   repos: (login: string, updatedAfter?: Date) => Promise<Repo[]>
 };
-
-RepoPoxy {
+repo{
   info: (owner: string, name: string) => Promise<Repo>;
   stars: (owner: string, name: string, updatedAfter?: Date) => Promise<UserWithTimeStamp[]>;
   forks: (owner: string, name: string, updatedAfter?: Date) => Promise<UserWithTimeStamp[]>;
@@ -40,5 +39,10 @@ RepoPoxy {
   pulls: (owner: string, name: string, updatedAfter?: Date) => Promise<PullRequest[]>;
   contributors: (owner: string, name: string, branch: string, commitLimit?: number) => Promise<UserWithTimeStampAndEmail[]>;
   full: (owner: string, name: string, param?: RepoFullParam, updatedAfter?: Date) => Promise<Repo>;
+};
+user{
+  info: (login: string) => Promise<User>;
+  following: (login: string) => Promise<UserFollower[]>;
+  follower: (login: string) => Promise<UserFollower[]>;
 }
 ```

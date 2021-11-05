@@ -1,17 +1,18 @@
-import { GitHubClient } from "github-graphql-v4-client";
-import { Repo } from "./data-types";
+import { GitHubClient } from 'github-graphql-v4-client';
+import { Repo } from './data-types';
 
 export async function getRepo(owner: string, name: string, client: GitHubClient): Promise<Repo> {
-  let repoInfo = await client.query<RepoInfo, QueryVars>(getInitialRepoInfoSql, {
+  const repoInfo = await client.query<RepoInfo, QueryVars>(getInitialRepoInfoSql, {
     owner,
     name
   });
   if (!repoInfo || !repoInfo.repository) return null;
-  let r = repoInfo.repository;
-  let repo: Repo = {
+  const r = repoInfo.repository;
+  const repo: Repo = {
     // basic
     id: r.id,
-    owner: owner,
+    databaseId: r.databaseId,
+    owner,
     ownerInfo: r.owner,
     name,
     license: r.licenseInfo ? r.licenseInfo.name : null,
@@ -33,7 +34,7 @@ export async function getRepo(owner: string, name: string, client: GitHubClient)
     forks: [],
     // branch
     branchCount: r.refs ? r.refs.totalCount : 0,
-    defaultBranchName: r.defaultBranchRef ? r.defaultBranchRef.name : "",
+    defaultBranchName: r.defaultBranchRef ? r.defaultBranchRef.name : '',
     defaultBranchCommitCount: (r.defaultBranchRef && r.defaultBranchRef.target) ? r.defaultBranchRef.target.history.totalCount : 0,
     // release
     releaseCount: r.releases ? r.releases.totalCount : 0,
@@ -68,6 +69,7 @@ type RepoInfo = {
     };
     name: string;
     id: string;
+    databaseId: number;
     createdAt: string;
     updatedAt: string;
     pushedAt: string;
@@ -112,7 +114,7 @@ type RepoInfo = {
 type QueryVars = {
   owner: string;
   name: string;
-}
+};
 
 const getInitialRepoInfoSql = `query getReposss($owner: String!, $name: String!) {
     rateLimit {
@@ -151,6 +153,7 @@ const getInitialRepoInfoSql = `query getReposss($owner: String!, $name: String!)
             }
         }
         name
+        databaseId
         id
         createdAt
         updatedAt
@@ -194,4 +197,4 @@ const getInitialRepoInfoSql = `query getReposss($owner: String!, $name: String!)
         }
     }
 }
-`
+`;

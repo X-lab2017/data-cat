@@ -1,6 +1,7 @@
 export type Repo = {
   // basic
   id: string;
+  databaseId: number;
   owner: string;
   ownerInfo: {
     login: string;
@@ -49,7 +50,7 @@ export type Repo = {
   pulls: PullRequest[];
   // contributors
   contributors: UserWithTimeStampAndEmail[];
-}
+};
 
 export type Issue = {
   id: string;
@@ -62,7 +63,7 @@ export type Issue = {
   body: string;
   labels: string[];
   comments: Comment[];
-}
+};
 
 export type PullRequest = {
   id: string;
@@ -79,7 +80,7 @@ export type PullRequest = {
   reviewComments: Comment[];
   additions: number;
   deletions: number;
-}
+};
 
 export type Comment = {
   id: string;
@@ -87,20 +88,36 @@ export type Comment = {
   body: string;
   url: string;
   createdAt: string;
-}
+};
 
 export type UserWithTimeStamp = {
   login: string;
   time: string;
-}
+};
 
 export type UserWithTimeStampAndEmail = {
   login: string;
   email: string;
   time: string;
-}
+};
+
+export type User = {
+  databaseId: number;
+  createdAt: string;
+  location: string;
+  company: string;
+  bio: string;
+  isEmployee: boolean;
+  email: string;
+  name: string;
+};
+
+export type UserFollower = {
+  login: string;
+  databaseId: number;
+};
 
 export type PageInfo = {
   hasNextPage: boolean;
   endCursor: string;
-}
+};
