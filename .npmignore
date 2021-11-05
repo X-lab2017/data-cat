@@ -21,3 +21,5 @@ coverage
 .github
 # circleci settings
 .circleci
+
+!lib/src
