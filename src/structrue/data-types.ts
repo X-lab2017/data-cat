@@ -44,6 +44,8 @@ export type Repo = {
   defaultBranchCommitCount: number;
   // release
   releaseCount: number;
+  // topic
+  topics: string[];
   // issue
   issues: Issue[];
   // pull request

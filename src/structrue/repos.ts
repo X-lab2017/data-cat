@@ -38,6 +38,8 @@ export async function getRepo(owner: string, name: string, client: GitHubClient)
     defaultBranchCommitCount: (r.defaultBranchRef && r.defaultBranchRef.target) ? r.defaultBranchRef.target.history.totalCount : 0,
     // release
     releaseCount: r.releases ? r.releases.totalCount : 0,
+    // topic
+    topics: r.repositoryTopics.nodes.map(t => t.topic.name),
     // issue
     issues: [],
     // pull request
@@ -108,6 +110,13 @@ type RepoInfo = {
     codeOfConduct: {
       url: string;
     };
+    repositoryTopics: {
+      nodes: {
+        topic: {
+          name: string;
+        }
+      }[];
+    }
   };
 };
 
@@ -194,6 +203,13 @@ const getInitialRepoInfoSql = `query getReposss($owner: String!, $name: String!)
         }
         codeOfConduct {
             url
+        }
+        repositoryTopics(first: 20) {
+          nodes {
+            topic {
+              name
+            }
+          }
         }
     }
 }

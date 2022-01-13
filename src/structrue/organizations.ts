@@ -34,6 +34,8 @@ function parseRepo(r: RawRepoInfo): Repo {
     defaultBranchCommitCount: (r.defaultBranchRef && r.defaultBranchRef.target) ? r.defaultBranchRef.target.history.totalCount : 0,
     // release
     releaseCount: r.releases ? r.releases.totalCount : 0,
+    // topic
+    topics: [],
     // issue
     issues: [],
     // pull request
